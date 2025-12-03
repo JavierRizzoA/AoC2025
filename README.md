@@ -12,9 +12,9 @@
 My solutions for the [Advent of Code 2025](https://adventofcode.com/2025)
 problems.
 
-![](https://img.shields.io/badge/day%20📅-25-blue)
-![](https://img.shields.io/badge/stars%20⭐-24-yellow)
-![](https://img.shields.io/badge/days%20completed-12-red)
+![](https://img.shields.io/badge/day%20📅-3-blue)
+![](https://img.shields.io/badge/stars%20⭐-6-yellow)
+![](https://img.shields.io/badge/days%20completed-3-red)
 
 ## Running
 
