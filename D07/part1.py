@@ -6,6 +6,7 @@ with open('input', 'r') as f:
         line = line.strip()
         lines.append(list(line.strip()))
 
+
 for y in range(len(lines)):
     if y == 0:
         continue
