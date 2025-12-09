@@ -1,19 +1,23 @@
-def print_floor(floor):
-    for y in range(len(floor)):
-        for x in range(len(floor[y])):
-            print(floor[y][x], end="")
-        print()
+def any_line_intersects(p1, p2, corners):
+    sx1 = min(p1[0], p2[0])
+    sx2 = max(p1[0], p2[0])
+    sy1 = min(p1[1], p2[1])
+    sy2 = max(p1[1], p2[1])
 
-
-def draw_line(floor, p1, p2):
-    if p1[0] == p2[0]:
-        x = p1[0]
-        for y in range(min(p1[1], p2[1]) + 1, max(p1[1], p2[1])):
-            floor[y][x] = 'X'
-    elif p1[1] == p2[1]:
-        y = p1[1]
-        for x in range(min(p1[0], p2[0]) + 1, max(p1[0], p2[0])):
-            floor[y][x] = 'X'
+    for i in range(len(corners)):
+        l1 = corners[i]
+        l2 = corners[(i + 1) % len(corners)]
+        x1 = min(l1[0], l2[0])
+        x2 = max(l1[0], l2[0])
+        y1 = min(l1[1], l2[1])
+        y2 = max(l1[1], l2[1])
+        if x1 == x2:
+            if (x1 > sx1 and x1 < sx2) and ((y1 <= sy1 and y2 > sy1) or (y1 < sy2 and y2 >= sy2)):
+                return True
+        else:
+            if (y1 > sy1 and y1 < sy2) and ((x1 <= sx1 and x2 > sx1) or (x1 < sx2 and x2 >= sx2)):
+                return True
+    return False
 
 
 corners = []
@@ -21,28 +25,12 @@ with open('input', 'r') as f:
     for line in f:
         corners.append(tuple(map(lambda x: int(x), line.split(','))))
 
-min_x = min(c[0] for c in corners)
-max_x = max(c[0] for c in corners)
-min_y = min(c[1] for c in corners)
-max_y = max(c[1] for c in corners)
 
-new_corners = []
-for i in range(len(corners)):
-    new_corners.append((corners[i][0] - min_x, corners[i][1] - min_y))
+max_area = 0
+for i in range(len(corners) - 1):
+    for j in range(i + 1, len(corners)):
+        area = (abs(corners[i][0] - corners[j][0]) + 1) * (abs(corners[i][1] - corners[j][1]) + 1)
+        if area > max_area and not any_line_intersects(corners[i], corners[j], corners):
+            max_area = max(max_area, area)
 
-corners = new_corners
-
-floor = []
-for y in range(max_y-min_y+1):
-    floor.append(['.'] * (max_x-min_x+1))
-
-
-for i in range(len(corners)):
-    x = corners[i][0]
-    y = corners[i][1]
-    floor[y][x] = '#'
-    draw_line(floor, corners[i], corners[(i-1)%len(corners)])
-    #print_floor(floor)
-    #print()
-
-#print_floor(floor)
+print(max_area)
